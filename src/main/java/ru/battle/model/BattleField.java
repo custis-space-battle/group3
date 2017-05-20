@@ -38,6 +38,7 @@ public class BattleField {
     }
 
     public void put(int x, int y, Cell cell) {
+        if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return;
         field.get(x).set(y, cell);
     }
 
@@ -56,6 +57,10 @@ public class BattleField {
 
     public String getCell(int x, int y) {
         return field.get(x).get(y).symbol;
+    }
+
+    public boolean isCellType(Point point, Cell cell) {
+        return isCellType(point.getX(), point.getY(), cell);
     }
 
     public boolean isCellType(int x, int y, Cell cell) {

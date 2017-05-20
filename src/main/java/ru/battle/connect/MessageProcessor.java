@@ -1,10 +1,10 @@
 package ru.battle.connect;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.battle.actions.GenerateField;
 import ru.battle.actions.MakeShot;
 import ru.battle.model.BattleField;
 import ru.battle.model.Game;
+import ru.battle.model.Point;
 
 /**
  * Created by onotole on 20/05/2017.
@@ -19,6 +19,14 @@ public class MessageProcessor {
             game.startNewGame();
             return game.getOurField().getConfiguration();
         }
+//        if (inputMessage.startsWith("winner")) {
+//            game = new Game();
+//            game.startNewGame();
+//            makeShot = new MakeShot(game);
+//            return "start: bot2";
+//        }
+
+
         if (inputMessage.startsWith("Warning") || inputMessage.startsWith("winner") || inputMessage.startsWith("Info")) {
             return "";
         }
@@ -36,11 +44,13 @@ public class MessageProcessor {
                     break;
                 case "HIT":
                     cell = BattleField.Cell.SHIP;
-                    game.setLastHit(new int[] {x - 1,y - 1});
+                    game.setLastHit(new Point(x - 1,y - 1));
                     break;
                 case "KILL":
                     cell = BattleField.Cell.SHIP;
-                    game.setLastHit(new int[]{});
+                    game.setLastHit(new Point(x - 1, y - 1));
+                    makeShot.markZoneAroundDestroyedShip();
+                    game.setLastHit(null);
                     break;
                 case "HIT_MINE":
                     cell = BattleField.Cell.MINE;

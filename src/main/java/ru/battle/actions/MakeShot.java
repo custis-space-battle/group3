@@ -43,7 +43,7 @@ public class MakeShot {
 
     public Point makeShot() {
         Point p = null;
-        if (game.getLastHit().length == 0) {
+        if (game.getLastHit() == null) {
 
             while (p == null || ! game.getEnemyField().isCellType(p.getX(), p.getY(), BattleField.Cell.UNKNOWN)) {
                 if (pointsToShoot.isEmpty()) {
@@ -56,7 +56,7 @@ public class MakeShot {
         } else {
 
             ShipOrientation orientation = detectEnemyShipOrientation();
-            log.info("[sh] orientation of last success hit: " + orientation + " coord: " + Arrays.toString(game.getLastHit()));
+            log.info("[sh] orientation of last success hit: " + orientation + " coord: " + game.getLastHit());
             switch (orientation) {
                 case VERTICAL:
                     p = makeVerticalShot();
@@ -75,16 +75,87 @@ public class MakeShot {
         return p;
     }
 
-    public void markZoneAroundDestoyedShip() {
+    public void markZoneAroundDestroyedShip() {
         ShipOrientation orientation = detectEnemyShipOrientation();
-        int x = game.getLastHit()[0];
-        int y = game.getLastHit()[1];
+        int x = game.getLastHit().getX();
+        int y = game.getLastHit().getY();
+        log.info("[mk] start marking zone after destroy, x = " + x + " y = " + y + " orient: " + orientation);
+
+        if (orientation == VERTICAL) {
+            Point bottom = findBottomOfVerticalShip(game.getLastHit());
+            x = bottom.getX();
+            y = bottom.getY();
+            //    X
+            //    X
+            //--> X
+            //
+            game.getEnemyField().put(x - 1, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x + 1, y + 1, BattleField.Cell.EMPTY);
+
+            for (int i = 0; i < 4; i++) {
+                game.getEnemyField().put(x - 1, y - i, BattleField.Cell.EMPTY);
+                game.getEnemyField().put(x + 1, y - i, BattleField.Cell.EMPTY);
+                if (! game.getEnemyField().isCellType(x, y - i, BattleField.Cell.SHIP)) {
+                    game.getEnemyField().put(x, y - i, BattleField.Cell.EMPTY);
+                    break;
+                }
+            }
+        } else if (orientation == HORIZONTAL) {
+            Point left = findLeftOfHorizontalShip(game.getLastHit());
+            x = left.getX();
+            y = left.getY();
+
+            game.getEnemyField().put(x - 1, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x - 1, y , BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x - 1, y - 1, BattleField.Cell.EMPTY);
+
+            for (int i = 0; i < 4; i++) {
+                game.getEnemyField().put(x + i, y + 1, BattleField.Cell.EMPTY);
+                game.getEnemyField().put(x + i, y - 1, BattleField.Cell.EMPTY);
+                if (! game.getEnemyField().isCellType(x + i, y, BattleField.Cell.SHIP)) {
+                    game.getEnemyField().put(x + i, y, BattleField.Cell.EMPTY);
+                    break;
+                }
+            }
+        } else {
+            game.getEnemyField().put( x + 1, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x - 1, y + 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x + 1, y, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x - 1,  y, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x + 1, y - 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x, y - 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put( x - 1, y - 1, BattleField.Cell.EMPTY);
+        }
+        log.info("[mk] finish marking zone after destroy, x = " + x + " y = " + y + " orient: " + orientation);
 
     }
 
+    private Point findLeftOfHorizontalShip(Point p) {
+        //
+        //  --> XXX
+        //
+        for (int i = 0; i < 4; i++) {
+            if (! game.getEnemyField().isCellType(p.getX() - i - 1, p.getY(), BattleField.Cell.SHIP)) {
+                return new Point(p.getX() - i, p.getY());
+            }
+        }
+        throw new RuntimeException("[mk] Couldn't find left of ship!");
+    }
+
+    private Point findBottomOfVerticalShip(Point p) {
+        for (int i = 0; i < 4; i++) {
+            if (! game.getEnemyField().isCellType(p.getX(), p.getY() + i + 1, BattleField.Cell.SHIP)) {
+                return new Point(p.getX(), p.getY() + i);
+            }
+        }
+        throw new RuntimeException("[mk] Couldn't find bottom of ship!");
+    }
+
     private ShipOrientation detectEnemyShipOrientation() {
-        int x = game.getLastHit()[0];
-        int y = game.getLastHit()[1];
+        int x = game.getLastHit().getX();
+        int y = game.getLastHit().getY();
         if (game.getEnemyField().isCellType(x - 1, y, BattleField.Cell.SHIP) ||
                 game.getEnemyField().isCellType(x+ 1, y, BattleField.Cell.SHIP)){
             return HORIZONTAL;
@@ -99,8 +170,8 @@ public class MakeShot {
     }
 
     private Point makeHorizontalShot() {
-        int x = game.getLastHit()[0];
-        int y = game.getLastHit()[1];
+        int x = game.getLastHit().getX();
+        int y = game.getLastHit().getY();
         int shift = 0;
         while (shift < 6) {
             shift++;
@@ -116,8 +187,8 @@ public class MakeShot {
     }
 
     private Point makeVerticalShot() {
-        int x = game.getLastHit()[0];
-        int y = game.getLastHit()[1];
+        int x = game.getLastHit().getX();
+        int y = game.getLastHit().getY();
         int shift = 0;
         while (true) {
             shift++;
@@ -135,8 +206,8 @@ public class MakeShot {
 
     private Point makeAnyOrientationShot() {
         log.info("[sh]");
-        int x = game.getLastHit()[0];
-        int y = game.getLastHit()[1];
+        int x = game.getLastHit().getX();
+        int y = game.getLastHit().getY();
         int shift = 0;
         while (shift < 6) {
             shift++;

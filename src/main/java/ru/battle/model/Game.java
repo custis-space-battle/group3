@@ -12,7 +12,7 @@ import ru.battle.actions.GenerateField;
 public class Game {
     private BattleField ourField;
     private BattleField enemyField;
-    private int[] lastHit = new int[]{};
+    private Point lastHit = null;
 
     public void startNewGame() {
         ourField = new GenerateField().genField();
@@ -23,11 +23,13 @@ public class Game {
     public String showFields() {
         StringBuilder sb = new StringBuilder(300);
         sb.append("\n");
+        sb.append(" ");
 
         for (int i = 0; i < BattleField.SIZE; i++) {
             sb.append(i);
         }
         sb.append("\t");
+        sb.append(" ");
         for (int i = 0; i < BattleField.SIZE; i++) {
             sb.append(i);
         }
