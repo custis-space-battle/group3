@@ -77,6 +77,6 @@ public class MessageProcessor {
             return "";
         }
 
-        return "blah";
+        return "";
     }
 }
