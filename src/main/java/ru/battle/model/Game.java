@@ -10,6 +10,7 @@ import ru.battle.actions.GenerateField;
 public class Game {
     private BattleField ourField;
     private BattleField enemyField;
+    private int[] lastHit;
 
 
     public void startNewGame() {

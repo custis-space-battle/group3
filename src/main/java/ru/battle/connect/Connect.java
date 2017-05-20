@@ -45,7 +45,6 @@ public class Connect {
                 log.info(" [x] Received '" + message + "'");
                 String outputMessage =  processor.processMessage(message);
                 if (! outputMessage.isEmpty()) {
-                    log.info("[x] Send: " + outputMessage);
                     send(outputMessage);
                 }
             }
@@ -56,6 +55,7 @@ public class Connect {
 
     @SneakyThrows
     public void send(String message) {
+        log.info("[x] Send: " + message);
         outputChannel.basicPublish(outputQueue, outputQueue, null, message.getBytes());
     }
 
