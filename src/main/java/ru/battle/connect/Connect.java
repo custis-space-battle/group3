@@ -2,12 +2,14 @@ package ru.battle.connect;
 
 import com.rabbitmq.client.*;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 /**
  * Created by onotole on 20/05/2017.
  */
+@Slf4j
 public class Connect {
     private final String URL = "amqp://group3:TpRjMQ@91.241.45.69/debug";
     private ConnectionFactory factory;
@@ -16,7 +18,6 @@ public class Connect {
     private Channel outputChannel;
     private String inptuQueue = "to_group3";
     private String outputQueue = "group3";
-    private String message = "start:bot";
     private Consumer consumer;
 
     public Connect() {
@@ -40,11 +41,17 @@ public class Connect {
                                        AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println(" [x] Received '" + message + "'");
+                log.info(" [x] Received '" + message + "'");
+//                System.out.println(" [x] Received '" + message + "'");
             }
         };
         inputChannel.basicConsume(inptuQueue, true, consumer);
 
+    }
+
+    @SneakyThrows
+    public void send(String message) {
+        log.info("send: " + message);
         outputChannel.basicPublish(outputQueue, outputQueue, null, message.getBytes());
     }
 
