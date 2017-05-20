@@ -19,12 +19,12 @@ public class MessageProcessor {
             game.startNewGame();
             return game.getOurField().getConfiguration();
         }
-//        if (inputMessage.startsWith("winner")) {
-//            game = new Game();
-//            game.startNewGame();
-//            makeShot = new MakeShot(game);
-//            return "start: bot2";
-//        }
+        if (inputMessage.startsWith("winner")) {
+            game = new Game();
+            game.startNewGame();
+            makeShot = new MakeShot(game);
+            return "start: bot4";
+        }
 
 
         if (inputMessage.startsWith("Warning") || inputMessage.startsWith("winner") || inputMessage.startsWith("Info")) {
@@ -48,6 +48,7 @@ public class MessageProcessor {
                     break;
                 case "KILL":
                     cell = BattleField.Cell.SHIP;
+                    game.getEnemyField().put(x-1 , y - 1, cell);
                     game.setLastHit(new Point(x - 1, y - 1));
                     makeShot.markZoneAroundDestroyedShip();
                     game.setLastHit(null);
@@ -72,7 +73,7 @@ public class MessageProcessor {
             String[] hit = inputMessage.split(":")[2].split(",");
             int x = Integer.valueOf(hit[0].trim());
             int y = Integer.valueOf(hit[1]);
-            game.getOurField().put(x-1, y-1, BattleField.Cell.WRECK);
+//            game.getOurField().put(x-1, y-1, BattleField.Cell.WRECK);
             return "";
         }
 

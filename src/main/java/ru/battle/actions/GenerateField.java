@@ -33,10 +33,7 @@ public class GenerateField {
         return field;
     }
 
-    public BattleField genIdealField() {
-        BattleField field = new BattleField();
-        field.getEmptyField();
-
+    private void genIdealPrepare1(BattleField field) {
         field.put(0,0, BattleField.Cell.SHIP);
         field.put(1,0, BattleField.Cell.SHIP);
         field.put(2,0, BattleField.Cell.SHIP);
@@ -53,9 +50,62 @@ public class GenerateField {
         field.put(4,9, BattleField.Cell.SHIP);
         field.put(6,9, BattleField.Cell.SHIP);
         field.put(7,9, BattleField.Cell.SHIP);
-        field.put(0,3, BattleField.Cell.SHIP);
+    }
 
-        for (int i = 0; i < 3; i++) {
+    private void genIdealPrepare2(BattleField field) {
+        field.put(0,4, BattleField.Cell.SHIP);
+        field.put(0,5, BattleField.Cell.SHIP);
+        field.put(0,6, BattleField.Cell.SHIP);
+        field.put(2,0, BattleField.Cell.SHIP);
+        field.put(2,1, BattleField.Cell.SHIP);
+        field.put(5,0, BattleField.Cell.SHIP);
+        field.put(6,0, BattleField.Cell.SHIP);
+        field.put(8,4, BattleField.Cell.SHIP);
+        field.put(9,4, BattleField.Cell.SHIP);
+        field.put(7,7, BattleField.Cell.SHIP);
+        field.put(8,7, BattleField.Cell.SHIP);
+        field.put(9,7, BattleField.Cell.SHIP);
+        field.put(5,9, BattleField.Cell.SHIP);
+        field.put(6,9, BattleField.Cell.SHIP);
+        field.put(7,9, BattleField.Cell.SHIP);
+        field.put(8,9, BattleField.Cell.SHIP);
+    }
+
+
+    private void genIdealPrepare3(BattleField field) {
+        field.put(0, 2, BattleField.Cell.SHIP);
+        field.put(1, 2, BattleField.Cell.SHIP);
+        field.put(0, 5, BattleField.Cell.SHIP);
+        field.put(1, 5, BattleField.Cell.SHIP);
+        field.put(0,8, BattleField.Cell.SHIP);
+        field.put(1,8, BattleField.Cell.SHIP);
+        field.put(2,8, BattleField.Cell.SHIP);
+        field.put(4,0, BattleField.Cell.SHIP);
+        field.put(4,1, BattleField.Cell.SHIP);
+        field.put(9,0, BattleField.Cell.SHIP);
+        field.put(9,1, BattleField.Cell.SHIP);
+        field.put(9,2, BattleField.Cell.SHIP);
+        field.put(9,3, BattleField.Cell.SHIP);
+        field.put(9,5, BattleField.Cell.SHIP);
+        field.put(8,5, BattleField.Cell.SHIP);
+        field.put(7,5, BattleField.Cell.SHIP);
+    }
+
+    public BattleField genIdealField() {
+        BattleField field = new BattleField();
+        field.getEmptyField();
+        switch (random.nextInt(3)) {
+            case 0:
+                genIdealPrepare1(field);
+                break;
+            case 1:
+                genIdealPrepare2(field);
+                break;
+            case 2:
+                genIdealPrepare3(field);
+                break;
+        }
+        for (int i = 0; i < 4; i++) {
             putUniShip(field);
         }
         return field;

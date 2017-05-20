@@ -10,7 +10,7 @@ import ru.battle.model.BattleField;
 public class Main {
     public static void main(String[] args) {
         Connect connect = new Connect();
-        connect.send("start: bot3");
+        connect.send("start: bot4");
 
 
 

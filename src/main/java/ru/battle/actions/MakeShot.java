@@ -81,40 +81,47 @@ public class MakeShot {
         int y = game.getLastHit().getY();
         log.info("[mk] start marking zone after destroy, x = " + x + " y = " + y + " orient: " + orientation);
 
-        if (orientation == VERTICAL) {
-            Point bottom = findBottomOfVerticalShip(game.getLastHit());
+        if (orientation == HORIZONTAL) {
+            Point bottom = findLeftOfHorizontalShip(game.getLastHit());
+            log.info("[mk] found left point: " + bottom);
             x = bottom.getX();
             y = bottom.getY();
             //    X
             //    X
             //--> X
             //
+            game.getEnemyField().put(x - 1, y - 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x - 1, y, BattleField.Cell.EMPTY);
             game.getEnemyField().put(x - 1, y + 1, BattleField.Cell.EMPTY);
-            game.getEnemyField().put(x, y + 1, BattleField.Cell.EMPTY);
-            game.getEnemyField().put(x + 1, y + 1, BattleField.Cell.EMPTY);
 
-            for (int i = 0; i < 4; i++) {
-                game.getEnemyField().put(x - 1, y - i, BattleField.Cell.EMPTY);
-                game.getEnemyField().put(x + 1, y - i, BattleField.Cell.EMPTY);
-                if (! game.getEnemyField().isCellType(x, y - i, BattleField.Cell.SHIP)) {
-                    game.getEnemyField().put(x, y - i, BattleField.Cell.EMPTY);
+//            game.getEnemyField().put(x - 1, y + 1, BattleField.Cell.EMPTY);
+//            game.getEnemyField().put(x, y + 1, BattleField.Cell.EMPTY);
+//            game.getEnemyField().put(x + 1, y + 1, BattleField.Cell.EMPTY);
+
+            for (int i = 0; i < 6; i++) {
+                game.getEnemyField().put(x + i, y - 1, BattleField.Cell.EMPTY);
+                game.getEnemyField().put(x + i, y + 1, BattleField.Cell.EMPTY);
+                if (! game.getEnemyField().isCellType(x + i, y, BattleField.Cell.SHIP)) {
+                    game.getEnemyField().put(x + i, y, BattleField.Cell.EMPTY);
                     break;
                 }
             }
-        } else if (orientation == HORIZONTAL) {
-            Point left = findLeftOfHorizontalShip(game.getLastHit());
+        } else if (orientation == VERTICAL) {
+            Point left = findBottomOfVerticalShip(game.getLastHit());
+            log.info("[mk] found bottom point: " + left);
+
             x = left.getX();
             y = left.getY();
 
-            game.getEnemyField().put(x - 1, y + 1, BattleField.Cell.EMPTY);
-            game.getEnemyField().put(x - 1, y , BattleField.Cell.EMPTY);
-            game.getEnemyField().put(x - 1, y - 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x - 1, y -1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x , y - 1, BattleField.Cell.EMPTY);
+            game.getEnemyField().put(x + 1, y - 1, BattleField.Cell.EMPTY);
 
-            for (int i = 0; i < 4; i++) {
-                game.getEnemyField().put(x + i, y + 1, BattleField.Cell.EMPTY);
-                game.getEnemyField().put(x + i, y - 1, BattleField.Cell.EMPTY);
-                if (! game.getEnemyField().isCellType(x + i, y, BattleField.Cell.SHIP)) {
-                    game.getEnemyField().put(x + i, y, BattleField.Cell.EMPTY);
+            for (int i = 0; i < 6; i++) {
+                game.getEnemyField().put(x - 1, y + i, BattleField.Cell.EMPTY);
+                game.getEnemyField().put(x + 1, y + i, BattleField.Cell.EMPTY);
+                if (! game.getEnemyField().isCellType(x, y + i, BattleField.Cell.SHIP)) {
+                    game.getEnemyField().put(x, y + i, BattleField.Cell.EMPTY);
                     break;
                 }
             }
@@ -146,8 +153,8 @@ public class MakeShot {
 
     private Point findBottomOfVerticalShip(Point p) {
         for (int i = 0; i < 4; i++) {
-            if (! game.getEnemyField().isCellType(p.getX(), p.getY() + i + 1, BattleField.Cell.SHIP)) {
-                return new Point(p.getX(), p.getY() + i);
+            if (! game.getEnemyField().isCellType(p.getX(), p.getY() - i - 1, BattleField.Cell.SHIP)) {
+                return new Point(p.getX(), p.getY() - i);
             }
         }
         throw new RuntimeException("[mk] Couldn't find bottom of ship!");
@@ -170,12 +177,16 @@ public class MakeShot {
     }
 
     private Point makeHorizontalShot() {
+        boolean downOk = true;
         int x = game.getLastHit().getX();
         int y = game.getLastHit().getY();
         int shift = 0;
         while (shift < 6) {
             shift++;
-            if (game.getEnemyField().isCellType(x + shift, y, BattleField.Cell.UNKNOWN)) {
+            if (game.getEnemyField().isCellType(x + shift, y, BattleField.Cell.EMPTY)) {
+                downOk = false;
+            }
+            if ( downOk && game.getEnemyField().isCellType(x + shift, y, BattleField.Cell.UNKNOWN)) {
                 break;
             }
             if (game.getEnemyField().isCellType(x - shift, y, BattleField.Cell.UNKNOWN)) {
@@ -187,12 +198,16 @@ public class MakeShot {
     }
 
     private Point makeVerticalShot() {
+        boolean rightOk = true;
         int x = game.getLastHit().getX();
         int y = game.getLastHit().getY();
         int shift = 0;
         while (true) {
             shift++;
-            if (game.getEnemyField().isCellType(x, y + shift, BattleField.Cell.UNKNOWN)) {
+            if (game.getEnemyField().isCellType(x, y + shift, BattleField.Cell.EMPTY)) {
+                rightOk = false;
+            }
+            if (rightOk && game.getEnemyField().isCellType(x, y + shift, BattleField.Cell.UNKNOWN)) {
                 break;
             }
             if (game.getEnemyField().isCellType(x, y - shift, BattleField.Cell.UNKNOWN)) {

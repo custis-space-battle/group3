@@ -1,5 +1,7 @@
 package ru.battle.model;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +9,7 @@ import java.util.Random;
 /**
  * Created by onotole on 20/05/2017.
  */
+@Slf4j
 public class BattleField {
     public static final int SIZE = 10;
     private List<List<Cell>> field;
@@ -38,6 +41,7 @@ public class BattleField {
     }
 
     public void put(int x, int y, Cell cell) {
+        log.info("mark cell: " + x + ":" + y + " with: " + cell);
         if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return;
         field.get(x).set(y, cell);
     }
