@@ -71,7 +71,6 @@ public class GenerateField {
         field.put(8,9, BattleField.Cell.SHIP);
     }
 
-
     private void genIdealPrepare3(BattleField field) {
         field.put(0, 0, BattleField.Cell.SHIP);
         field.put(1, 0, BattleField.Cell.SHIP);

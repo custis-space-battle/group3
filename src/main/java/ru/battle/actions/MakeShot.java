@@ -20,16 +20,32 @@ import static ru.battle.actions.MakeShot.ShipOrientation.VERTICAL;
 @Slf4j
 public class MakeShot {
     private Game game;
+
     private List<Point> pointsToShoot = new ArrayList<>();
+
     private Random random = new Random();
     int webConfiguration = random.nextInt() % 2;
-
     public MakeShot(Game game) {
         this.game = game;
-        initWeb(webConfiguration);
+        borderInitialWeb();
+    }
+
+    private void borderInitialWeb() {
+        pointsToShoot.add(new Point(0, 0));
+        for (int i = 1; i < BattleField.SIZE / 2; i++) {
+            pointsToShoot.add(new Point(0, 2*i));
+            pointsToShoot.add(new Point(9, 2*i));
+            pointsToShoot.add(new Point(2*i, 0));
+            pointsToShoot.add(new Point(2*i, 9));
+        }
+    }
+
+    public void setPointsToShoot(List<Point> pointsToShoot) {
+        this.pointsToShoot = pointsToShoot;
     }
 
     private void initWeb(int webConfiguration) {
+        log.info("init web with config: " + webConfiguration);
         int i = webConfiguration;
         for (int j = 0; j < 10; j++) {
             for (int k = 0; k < 5; k++) {
@@ -47,7 +63,7 @@ public class MakeShot {
 
             while (p == null || ! game.getEnemyField().isCellType(p.getX(), p.getY(), BattleField.Cell.UNKNOWN)) {
                 if (pointsToShoot.isEmpty()) {
-                    initWeb((webConfiguration + 1) % 2);
+                    initWeb((webConfiguration++) % 2);
                 }
                 int number = random.nextInt(pointsToShoot.size());
                 p = pointsToShoot.remove(number);

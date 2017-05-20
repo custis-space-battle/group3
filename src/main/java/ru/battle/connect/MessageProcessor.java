@@ -6,6 +6,8 @@ import ru.battle.model.BattleField;
 import ru.battle.model.Game;
 import ru.battle.model.Point;
 
+import java.util.ArrayList;
+
 /**
  * Created by onotole on 20/05/2017.
  */
@@ -19,13 +21,16 @@ public class MessageProcessor {
             game.startNewGame();
             return game.getOurField().getConfiguration();
         }
-        if (inputMessage.startsWith("winner")) {
-            game = new Game();
-            game.startNewGame();
-            makeShot = new MakeShot(game);
-            return "start: usual";
-        }
 
+        if (inputMessage.startsWith("Info: Game started:") && inputMessage.contains("BXM")) {
+            makeShot.setPointsToShoot(new ArrayList<>());
+        }
+//        if (inputMessage.startsWith("winner")) {
+//            game = new Game();
+//            game.startNewGame();
+//            makeShot = new MakeShot(game);
+//            return "start: usual";
+//        }
 
         if (inputMessage.startsWith("Warning") || inputMessage.startsWith("winner") || inputMessage.startsWith("Info")) {
             return "";
