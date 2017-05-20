@@ -94,7 +94,8 @@ public class BattleField {
 
 
     public enum Cell {
-        EMPTY("."), SHIP("#"), WRECK("*"), MINE("@"), UNKNOWN(" ");
+        EMPTY("o"), SHIP("X"), WRECK("*"), MINE("@"), UNKNOWN(".");
+
 
         private String symbol;
         Cell(String symbol) {

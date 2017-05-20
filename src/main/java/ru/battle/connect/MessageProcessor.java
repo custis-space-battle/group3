@@ -2,6 +2,7 @@ package ru.battle.connect;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.battle.actions.GenerateField;
+import ru.battle.actions.MakeShot;
 import ru.battle.model.BattleField;
 import ru.battle.model.Game;
 
@@ -11,6 +12,7 @@ import ru.battle.model.Game;
 @Slf4j
 public class MessageProcessor {
     private Game game = new Game();
+    private MakeShot makeShot = new MakeShot(game);
 
     public String processMessage(String inputMessage) {
         if (inputMessage.equals("prepare!")) {
@@ -33,8 +35,12 @@ public class MessageProcessor {
                     cell = BattleField.Cell.EMPTY;
                     break;
                 case "HIT":
+                    cell = BattleField.Cell.SHIP;
+                    game.setLastHit(new int[] {x - 1,y - 1});
+                    break;
                 case "KILL":
                     cell = BattleField.Cell.SHIP;
+                    game.setLastHit(new int[]{});
                     break;
                 case "HIT_MINE":
                     cell = BattleField.Cell.MINE;
@@ -48,7 +54,8 @@ public class MessageProcessor {
         }
 
         if (inputMessage.equals("fire!")) {
-           return game.getEnemyField().getRandomUnknownCell();
+            return makeShot.makeShot().addOneToEach().toString();
+//           return game.getEnemyField().getRandomUnknownCell();
         }
 
         if (inputMessage.startsWith("incoming fire: ")) {
