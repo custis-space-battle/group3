@@ -56,15 +56,15 @@ public class GenerateField {
         field.put(0,4, BattleField.Cell.SHIP);
         field.put(0,5, BattleField.Cell.SHIP);
         field.put(0,6, BattleField.Cell.SHIP);
+        field.put(0,9, BattleField.Cell.SHIP);
+        field.put(1,9, BattleField.Cell.SHIP);
+        field.put(2,9, BattleField.Cell.SHIP);
         field.put(2,0, BattleField.Cell.SHIP);
         field.put(2,1, BattleField.Cell.SHIP);
         field.put(5,0, BattleField.Cell.SHIP);
         field.put(6,0, BattleField.Cell.SHIP);
         field.put(8,4, BattleField.Cell.SHIP);
         field.put(9,4, BattleField.Cell.SHIP);
-        field.put(7,7, BattleField.Cell.SHIP);
-        field.put(8,7, BattleField.Cell.SHIP);
-        field.put(9,7, BattleField.Cell.SHIP);
         field.put(5,9, BattleField.Cell.SHIP);
         field.put(6,9, BattleField.Cell.SHIP);
         field.put(7,9, BattleField.Cell.SHIP);
@@ -73,22 +73,25 @@ public class GenerateField {
 
 
     private void genIdealPrepare3(BattleField field) {
-        field.put(0, 2, BattleField.Cell.SHIP);
-        field.put(1, 2, BattleField.Cell.SHIP);
-        field.put(0, 5, BattleField.Cell.SHIP);
-        field.put(1, 5, BattleField.Cell.SHIP);
-        field.put(0,8, BattleField.Cell.SHIP);
-        field.put(1,8, BattleField.Cell.SHIP);
-        field.put(2,8, BattleField.Cell.SHIP);
-        field.put(4,0, BattleField.Cell.SHIP);
+        field.put(0, 0, BattleField.Cell.SHIP);
+        field.put(1, 0, BattleField.Cell.SHIP);
+        field.put(2, 0, BattleField.Cell.SHIP);
+        field.put(4, 0, BattleField.Cell.SHIP);
         field.put(4,1, BattleField.Cell.SHIP);
-        field.put(9,0, BattleField.Cell.SHIP);
-        field.put(9,1, BattleField.Cell.SHIP);
-        field.put(9,2, BattleField.Cell.SHIP);
-        field.put(9,3, BattleField.Cell.SHIP);
-        field.put(9,5, BattleField.Cell.SHIP);
-        field.put(8,5, BattleField.Cell.SHIP);
-        field.put(7,5, BattleField.Cell.SHIP);
+        field.put(6, 0, BattleField.Cell.SHIP);
+        field.put(7, 0, BattleField.Cell.SHIP);
+        field.put(8, 0, BattleField.Cell.SHIP);
+        field.put(9, 0, BattleField.Cell.SHIP);
+
+        field.put(2, 9, BattleField.Cell.SHIP);
+        field.put(3, 9, BattleField.Cell.SHIP);
+
+        field.put(9, 3, BattleField.Cell.SHIP);
+        field.put(9, 4, BattleField.Cell.SHIP);
+
+        field.put(9, 7, BattleField.Cell.SHIP);
+        field.put(9, 8, BattleField.Cell.SHIP);
+        field.put(9, 9, BattleField.Cell.SHIP);
     }
 
     public BattleField genIdealField() {

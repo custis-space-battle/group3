@@ -73,7 +73,7 @@ public class MessageProcessor {
             String[] hit = inputMessage.split(":")[2].split(",");
             int x = Integer.valueOf(hit[0].trim());
             int y = Integer.valueOf(hit[1]);
-//            game.getOurField().put(x-1, y-1, BattleField.Cell.WRECK);
+            game.getOurField().put(x-1, y-1, BattleField.Cell.WRECK);
             return "";
         }
 
