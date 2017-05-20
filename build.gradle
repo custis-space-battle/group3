@@ -14,5 +14,10 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.16.16"
     // https://mvnrepository.com/artifact/com.rabbitmq/amqp-client
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '4.1.0'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
+
 
 }

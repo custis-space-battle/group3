@@ -2,6 +2,7 @@ package ru.battle.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by onotole on 20/05/2017.
@@ -9,6 +10,7 @@ import java.util.List;
 public class BattleField {
     public static final int SIZE = 10;
     private List<List<Cell>> field;
+    private Random random = new Random();
 
     @Override
     public String toString() {
@@ -48,7 +50,12 @@ public class BattleField {
                 }
             }
         }
-        return sb.toString();
+        String str = sb.toString();
+        return str.substring(0, str.length()-1);
+    }
+
+    public String getCell(int x, int y) {
+        return field.get(x).get(y).symbol;
     }
 
     public boolean isEmpty(int x, int y) {
@@ -70,6 +77,20 @@ public class BattleField {
             }
             field.add(list);
         }
+    }
+
+    public String getRandomUnknownCell() {
+        boolean success = false;
+        int x = 0;
+        int y = 0;
+        while (! success) {
+            x = random.nextInt(SIZE);
+            y = random.nextInt(SIZE);
+            if (field.get(x).get(y) == Cell.UNKNOWN) {
+                success = true;
+            }
+        }
+        return "" + (x + 1) + "," + (y + 1);
     }
 
 

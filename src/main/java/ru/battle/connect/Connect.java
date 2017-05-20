@@ -1,6 +1,7 @@
 package ru.battle.connect;
 
 import com.rabbitmq.client.*;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ public class Connect {
     private String inptuQueue = "to_group3";
     private String outputQueue = "group3";
     private Consumer consumer;
-
+    private MessageProcessor processor = new MessageProcessor();
     public Connect() {
         prepare();
     }
@@ -42,7 +43,11 @@ public class Connect {
                     throws IOException {
                 String message = new String(body, "UTF-8");
                 log.info(" [x] Received '" + message + "'");
-//                System.out.println(" [x] Received '" + message + "'");
+                String outputMessage =  processor.processMessage(message);
+                if (! outputMessage.isEmpty()) {
+                    log.info("[x] Send: " + outputMessage);
+                    send(outputMessage);
+                }
             }
         };
         inputChannel.basicConsume(inptuQueue, true, consumer);
@@ -51,7 +56,6 @@ public class Connect {
 
     @SneakyThrows
     public void send(String message) {
-        log.info("send: " + message);
         outputChannel.basicPublish(outputQueue, outputQueue, null, message.getBytes());
     }
 

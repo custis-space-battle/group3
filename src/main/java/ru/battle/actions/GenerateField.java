@@ -49,7 +49,7 @@ public class GenerateField {
         field.put(8,4, BattleField.Cell.SHIP);
         field.put(8,5, BattleField.Cell.SHIP);
         field.put(8,6, BattleField.Cell.SHIP);
-        log.info(field.toString());
+        log.info("\n" + field.toString());
         return field;
     }
 }
