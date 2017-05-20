@@ -16,7 +16,7 @@ public class GenerateField {
     };
 
     public BattleField genField() {
-        return genRandomField();
+        return genIdealField();
     }
 
     public BattleField genRandomField() {
@@ -31,6 +31,45 @@ public class GenerateField {
             }
         }
         return field;
+    }
+
+    public BattleField genIdealField() {
+        BattleField field = new BattleField();
+        field.getEmptyField();
+
+        field.put(0,0, BattleField.Cell.SHIP);
+        field.put(1,0, BattleField.Cell.SHIP);
+        field.put(2,0, BattleField.Cell.SHIP);
+        field.put(9,0, BattleField.Cell.SHIP);
+        field.put(9,1, BattleField.Cell.SHIP);
+        field.put(9,2, BattleField.Cell.SHIP);
+        field.put(9,6, BattleField.Cell.SHIP);
+        field.put(9,7, BattleField.Cell.SHIP);
+        field.put(9,8, BattleField.Cell.SHIP);
+        field.put(9,9, BattleField.Cell.SHIP);
+        field.put(0,8, BattleField.Cell.SHIP);
+        field.put(0,9, BattleField.Cell.SHIP);
+        field.put(3,9, BattleField.Cell.SHIP);
+        field.put(4,9, BattleField.Cell.SHIP);
+        field.put(6,9, BattleField.Cell.SHIP);
+        field.put(7,9, BattleField.Cell.SHIP);
+        field.put(0,3, BattleField.Cell.SHIP);
+
+        for (int i = 0; i < 3; i++) {
+            putUniShip(field);
+        }
+        return field;
+    }
+
+    private void putUniShip(BattleField field) {
+        boolean success = false;
+        while (! success) {
+            int x = random.nextInt(BattleField.SIZE - 2) + 1;
+            int y = random.nextInt(BattleField.SIZE - 2) + 1;
+            if (field.isExistCellInAround(x, y, BattleField.Cell.SHIP)) continue;
+            field.put(x, y, BattleField.Cell.SHIP);
+            success = true;
+        }
     }
 
     private void horizontalShip(int size, BattleField field) {
@@ -107,5 +146,11 @@ public class GenerateField {
         field.put(8,6, BattleField.Cell.SHIP);
         log.info("\n" + field.toString());
         return field;
+    }
+
+    public static void main(String[] args) {
+        GenerateField generateField = new GenerateField();
+
+        System.out.println(generateField.genIdealField());
     }
 }

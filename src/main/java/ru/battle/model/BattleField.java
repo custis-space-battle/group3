@@ -63,6 +63,17 @@ public class BattleField {
         return isCellType(point.getX(), point.getY(), cell);
     }
 
+    public boolean isExistCellInAround(int x, int y, Cell cell) {
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (isCellType(x + i, y + j, cell)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean isCellType(int x, int y, Cell cell) {
         if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) {
             return false;
