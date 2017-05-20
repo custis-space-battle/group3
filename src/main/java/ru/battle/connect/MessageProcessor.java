@@ -23,7 +23,7 @@ public class MessageProcessor {
             game = new Game();
             game.startNewGame();
             makeShot = new MakeShot(game);
-            return "start: bot4";
+            return "start: usual";
         }
 
 
