@@ -9,13 +9,14 @@ import ru.battle.model.BattleField;
 @Slf4j
 public class Main {
     public static void main(String[] args) {
-        Connect connect = new Connect();
-        connect.send("start: bot1");
+//        Connect connect = new Connect();
+//        connect.send("start: bot1");
 
 
 
-//        GenerateField generateField = new GenerateField();
-//        BattleField bf = generateField.genField();
+        GenerateField generateField = new GenerateField();
+        BattleField bf = generateField.genRandomField();
+        System.out.println(bf);
 //        System.out.println(bf.getRandomUnknownCell());
     }
 }

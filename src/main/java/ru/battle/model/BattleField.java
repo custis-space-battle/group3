@@ -58,12 +58,11 @@ public class BattleField {
         return field.get(x).get(y).symbol;
     }
 
-    public boolean isEmpty(int x, int y) {
-        if (x < 0 && y < 0 && x >= SIZE && y >= SIZE) {
+    public boolean isCellType(int x, int y, Cell cell) {
+        if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) {
             return false;
         }
-
-        return field.get(x).get(y) == Cell.EMPTY;
+        return field.get(x).get(y) == cell;
     }
 
     private void fillFieldWith(Cell cell) {
@@ -73,7 +72,7 @@ public class BattleField {
             list = new ArrayList<>();
 
             for (int j = 0; j < SIZE; j++) {
-                list.add(Cell.UNKNOWN);
+                list.add(cell);
             }
             field.add(list);
         }

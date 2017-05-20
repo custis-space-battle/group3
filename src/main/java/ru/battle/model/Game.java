@@ -12,7 +12,6 @@ public class Game {
     private BattleField enemyField;
     private int[] lastHit;
 
-
     public void startNewGame() {
         ourField = new GenerateField().genField();
         enemyField = new BattleField();
